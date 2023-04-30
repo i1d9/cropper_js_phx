@@ -1,0 +1,38 @@
+<div id="override_image" phx-hook="OverrideImage">
+  <form id="upload-form" phx-submit="save" phx-change="validate">
+    <%= live_file_input(@uploads.avatar, style: "display: none;") %>
+
+    <input id="image_file_input" type="file"  />
+
+    <div>
+      <img  id="image" accept="image/*" />
+
+      <button type="button" id="save_image" style="display: none;">
+        Done
+      </button>
+    </div>
+
+<%= for entry <- @uploads.avatar.entries do %>
+  <article class="upload-entry">
+
+    <figure>
+      <%# Phoenix.LiveView.Helpers.live_img_preview/2 renders a client-side preview %>
+      <%= live_img_preview entry %>
+      
+    </figure>
+
+
+
+
+
+    <%# Phoenix.LiveView.Helpers.upload_errors/2 returns a list of error atoms %>
+    <%= for err <- upload_errors(@uploads.avatar, entry) do %>
+      <p class="alert alert-danger"><%= error_to_string(err) %></p>
+    <% end %>
+
+  </article>
+<% end %>
+
+    <button type="submit">Upload</button>
+  </form>
+</div>

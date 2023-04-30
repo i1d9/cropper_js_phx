@@ -18,6 +18,7 @@ defmodule PhxCropperJsWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    live "/upload", UploaderLive, :index
   end
 
   # Other scopes may use custom stacks.

@@ -31,4 +31,5 @@ phx_cropper_js-*.tar
 # In case you use Node.js/npm, you want to ignore these.
 npm-debug.log
 /assets/node_modules/
-
+#Ignore uploaded files
+live_view_upload*

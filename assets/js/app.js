@@ -21,16 +21,78 @@ import "../css/app.css"
 
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html"
+import Cropper from 'cropperjs';
+
 // Establish Phoenix Socket and LiveView configuration.
-import {Socket} from "phoenix"
-import {LiveSocket} from "phoenix_live_view"
+import { Socket } from "phoenix"
+import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+
+
+
+let Hooks = {}
+
+
+
+Hooks.OverrideImage = {
+
+    mounted() {
+
+        const image = document.getElementById('image');
+        
+        
+        const image_input = document.getElementById('image_file_input');
+        const save_button = document.getElementById('save_image');
+
+        var cropper = '';
+
+        image_input.addEventListener("change", (e) => {
+            e.preventDefault()
+
+            image.src = URL.createObjectURL(e.target.files[0]);
+            cropper = new Cropper(image, {
+                dragMode: 'move',
+                aspectRatio: 1,
+                autoCropArea: 0.75,
+                restore: true,
+                guides: true,
+                center: true,
+                highlight: true,
+                cropBoxMovable: true
+
+            });
+
+            save_button.setAttribute("style", "display: block;");
+
+        });
+
+
+        save_button.addEventListener("click", (e) => {
+
+            let canvas = cropper.getCroppedCanvas();
+
+            if (canvas != null) {
+                
+                
+                canvas.toBlob((blob) => {
+                    //Saves to socket will upload if autoupload is set to true
+                    this.upload("avatar", [blob]);
+                });
+            }
+
+        });
+
+
+    }
+}
+
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
+let liveSocket = new LiveSocket("/live", Socket, { hooks: Hooks, params: { _csrf_token: csrfToken } })
 
 // Show progress bar on live navigation and form submits
-topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
+topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" })
 window.addEventListener("phx:page-loading-start", info => topbar.show())
 window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 
