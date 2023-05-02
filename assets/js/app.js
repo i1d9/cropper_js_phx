@@ -40,8 +40,6 @@ Hooks.OverrideImage = {
     mounted() {
 
         const image = document.getElementById('image');
-        
-        
         const image_input = document.getElementById('image_file_input');
         const save_button = document.getElementById('save_image');
 

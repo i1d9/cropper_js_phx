@@ -2,10 +2,10 @@
   <form id="upload-form" phx-submit="save" phx-change="validate">
     <%= live_file_input(@uploads.avatar, style: "display: none;") %>
 
-    <input id="image_file_input" type="file"  />
+    <input id="image_file_input" type="file" accept="image/*"  />
 
     <div>
-      <img  id="image" accept="image/*" />
+      <img  id="image" />
 
       <button type="button" id="save_image" style="display: none;">
         Done
@@ -20,10 +20,6 @@
       <%= live_img_preview entry %>
       
     </figure>
-
-
-
-
 
     <%# Phoenix.LiveView.Helpers.upload_errors/2 returns a list of error atoms %>
     <%= for err <- upload_errors(@uploads.avatar, entry) do %>
