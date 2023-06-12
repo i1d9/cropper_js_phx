@@ -1,0 +1,3 @@
+config :python, PhxCropperJs.Python,
+  python_interpretor_path: "/Users/your_user/.asdf/shims/python",
+  python_script_path: "lib/single_signon/face_detection"
