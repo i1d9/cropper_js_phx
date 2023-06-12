@@ -12,7 +12,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 
 ## Learn more
-
+  * ASDF Guides: https://asdf-vm.com/guide/getting-started.html
   * Phoenix Official website: https://www.phoenixframework.org/
   * OpenCV Python: https://pypi.org/project/opencv-python/
   * ErlPort Docs: https://www.google.com/search?client=safari&rls=en&q=erlport&ie=UTF-8&oe=UTF-8

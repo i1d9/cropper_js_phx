@@ -50,3 +50,12 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+
+# Finally import the config/dev.local.exs which should NOT be versioned
+if File.exists?("#{__DIR__}/#{Mix.env()}.local.exs") do
+  import_config "#{Mix.env()}.local.exs"
+else
+  require Logger
+  Logger.warn("Didn't find '#{Mix.env()}.local.exs'")
+end

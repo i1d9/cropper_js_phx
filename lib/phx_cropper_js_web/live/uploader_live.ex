@@ -1,6 +1,8 @@
 defmodule PhxCropperJsWeb.UploaderLive do
   use PhxCropperJsWeb, :live_view
 
+  alias PhxCropperJs.FaceDetection.Detector
+
   def mount(_params, _session, socket) do
     {:ok,
      socket
@@ -33,10 +35,36 @@ defmodule PhxCropperJsWeb.UploaderLive do
             Path.basename(path) <> "." <> extname
           ])
 
-        File.cp!(path, dest)
-        Routes.static_path(socket, "/uploads/#{Path.basename(dest)}")
-      end)
+        Detector.check(path)
+        |> case do
+          [0, 0] ->
+            {:postpone, :no_face_no_eyes}
 
-    {:noreply, update(socket, :uploaded_files, &(&1 ++ uploaded_files))}
+          [_, _] ->
+            File.cp!(path, dest)
+
+            Routes.static_path(socket, "/uploads/#{Path.basename(dest)}")
+            |> then(&{:ok, {:ok, &1}})
+
+          _ ->
+            {:postpone, :error}
+        end
+      end)
+      |> case do
+        [:no_face_no_eyes] ->
+          {:noreply,
+           socket
+           |> put_flash(:error, "No Face detected")
+           |> push_redirect(to: Routes.uploader_path(socket, :index))}
+
+        [ok: upload_path] ->
+          {:noreply, socket |> push_redirect(to: upload_path)}
+
+        _ ->
+          {:noreply,
+           socket
+           |> put_flash(:error, "Somwthing went wrong while saving your upload")
+           |> push_redirect(to: Routes.uploader_path(socket, :index))}
+      end
   end
 end

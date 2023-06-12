@@ -35,3 +35,5 @@ npm-debug.log
 live_view_upload*
 
 *.local.exs
+
+__pycache__
