@@ -21,7 +21,7 @@ import "../css/app.css"
 
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html"
-import Cropper from 'cropperjs';
+import 'cropperjs';
 
 // Establish Phoenix Socket and LiveView configuration.
 import { Socket } from "phoenix"

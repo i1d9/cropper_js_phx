@@ -2,7 +2,8 @@
   <form id="upload-form" phx-submit="save" phx-change="validate">
     <%= live_file_input(@uploads.avatar, style: "display: none;") %>
 
-    <input id="image_file_input" type="file" accept="image/*"  />
+    <label for="image_file_input">Upload Image</label>
+    <input id="image_file_input" type="file" accept="image/*"  style="display: none;"/>
 
     <div>
       <img  id="image" />
